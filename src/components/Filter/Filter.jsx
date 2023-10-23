@@ -1,21 +1,22 @@
+import { useState } from 'react'
 import css from './Filter.module.css'
-import React, { Component } from 'react'
 
-export default class Filter extends Component {
-    state = {
-        filter: this.props.filter
-    }
-    handleChange = (e) => { 
+
+export const Filter = ({filter, onChange}) => {
+
+  
+  const [filterValue, setFilter] = useState(filter);
+  
+    const handleChange = (e) => { 
     
-        this.setState({
-            filter: e.target.value
-        })
+        
+      setFilter(e.target.value);
 
-        this.props.onChange(e.target.value);
+      onChange(e.target.value);
         
     }
 
-  render() {
+
     return (
       <div>
         <p className={css.filterTittle}>Find contacts by name</p>
@@ -23,10 +24,10 @@ export default class Filter extends Component {
           className={css.input}
                 type="text"
                 name="filter"
-                value={this.state.filter}
-                onChange={this.handleChange}
+                value={filterValue}
+                onChange={handleChange}
             />
       </div>
     )
-  }
+  
 }

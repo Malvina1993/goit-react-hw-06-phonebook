@@ -1,57 +1,74 @@
-import { Component } from "react"
-import Form from "./Form/Form";
-import Contacts from "./Contacts/Contacts";
-import Filter from "./Filter/Filter";
+
+import { Form } from "./Form/Form";
+import {Contacts} from "./Contacts/Contacts";
+
+import { useEffect, useState } from "react";
+import { Filter } from "./Filter/Filter";
 
 
 
 
 
-export class App extends Component{
-  state = {
-    contacts: [],
-    filter: '',
-    
-  }
+export const App = () => {
+ 
 
-  componentDidMount = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  // const componentDidMount = () => {
+  //   if (localStorage.getItem('contacts')) {
+  //     this.setState({
+  //       contacts: JSON.parse(localStorage.getItem('contacts'))
+  //     })
+  //   }
+  // } 
+
+  useEffect(() => {
     if (localStorage.getItem('contacts')) {
-      this.setState({
-        contacts: JSON.parse(localStorage.getItem('contacts'))
-      })
+      setContacts(JSON.parse(localStorage.getItem('contacts')))
     }
-  } 
+  }, [])
 
-  componentDidUpdate = () => {
-    if (this.state.contacts.length !== 0) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  // const componentDidUpdate = () => {
+  //   if (this.state.contacts.length !== 0) {
+  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  //   }
+    
+    
+  // }
+  useEffect(() => {
+     if (contacts.length !== 0) {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
     }
+  }, [contacts])
+
+  const formSubmitHandle = (data, id) => {
+    // this.setState({
+    //   contacts: [{ id, ...data }, ...this.state.contacts],
     
-    
+    // })
+    setContacts([{id, ...data}, ...contacts])
+
   }
 
-  formSubmitHandle = (data, id) => {
-    this.setState({
-      contacts: [{ id, ...data }, ...this.state.contacts],
-    
-    })
-
-  }
 
 
-
-  filterChangeHandle = data => {
-    this.setState({
-      filter: data
-    })
+  const filterChangeHandle = data => {
+    // this.setState({
+    //   filter: data
+    // })
+    setFilter(data);
   };
 
-  onContactDelete = (name) => {
-    this.setState({
-      contacts: this.state.contacts.filter(contact => contact.name !== name)
-    })
+  const onContactDelete = (name) => {
+    // this.setState({
+    //   contacts: this.state.contacts.filter(contact => contact.name !== name)
+    // })
 
-    const newContacts = this.state.contacts.filter(contact => contact.name !== name);
+    setContacts(contacts.filter(contact => contact.name !== name));
+  
+
+    const newContacts = contacts.filter(contact => contact.name !== name);
     if (newContacts.length === 0) {
       localStorage.removeItem('contacts');
       return;
@@ -63,7 +80,7 @@ export class App extends Component{
   };
   
 
-  render() {
+  
     return (
       <div
         style={{
@@ -75,22 +92,22 @@ export class App extends Component{
       >
         <p>Phonebook</p>
         <Form
-          onSubmit={this.formSubmitHandle}
-          contacts={this.state.contacts}
+          onSubmit={formSubmitHandle}
+          contacts={contacts}
         />
         <p>Contacts</p>
         <Filter
-            filter={this.state.filter}
-            onChange={this.filterChangeHandle}
+            filter={filter}
+            onChange={filterChangeHandle}
         />
 
         <Contacts
-          contacts={this.state.contacts}
-          filterName={this.state.filter}
-          onContactDelete={this.onContactDelete}
+          contacts={contacts}
+          filterName={filter}
+          onContactDelete={onContactDelete}
         />
 
       </div>
     );
-  }
+  
 };

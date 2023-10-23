@@ -1,57 +1,65 @@
+import { useState } from 'react';
 import css from './Form.module.css';
 
-import React, { Component } from 'react';
+
 import { nanoid } from 'nanoid';
 
 
 
-export default class Form extends Component {
-    state = {
-        name: '',
-        number: '',
-    }
+export const Form = ({contacts, onSubmit}) => {
+   
+
+    const [name, setName] = useState('');
+    const [number, setNumber] = useState('');
 
     
-    
-    handleChange = (e) => {
+    const handleChange = (e) => {
         
-        this.setState({
-            [e.currentTarget.name]: e.currentTarget.value,
-        });
+        // this.setState({
+        //     [e.currentTarget.name]: e.currentTarget.value,
+        // });
 
-        
+        switch (e.currentTarget.name) {
+            case 'name':
+                setName(e.currentTarget.value);
+                break;
+            case 'number':
+                setNumber(e.currentTarget.value);
+                break;
+            default:
+                break;
+        }
     }
 
-    handleFormSubmit = (e) => { 
+        
+
+    const handleFormSubmit = (e) => { 
         e.preventDefault();
 
-        this.setState({
-            name: '',
-            number: '',
-           
-        });
+        setName('');
+        setNumber('');
 
-        if (this.props.contacts.some((contact) => contact.name === this.state.name)) { 
+        if (contacts.some((contact) => contact.name === name)) { 
             alert('This contact already exists');
             return;
         }
 
 
-        this.props.onSubmit(this.state, nanoid())
+        onSubmit({name, number}, nanoid())
        
     }
 
-  render() {
-      return (
+  
+    return (
         <div>
             
-            <form className={css.form} onSubmit={this.handleFormSubmit}>
+            <form className={css.form} onSubmit={handleFormSubmit}>
                 <label className={css.label}>Name</label>
                     <input
                         className={css.input}
                         name="name"
-                        value={this.state.name}
-                        onChange={this.handleChange}
+                        value={name}
+                        onChange={handleChange}
                         required
                     />
                 <label className={css.label}>Number</label>
@@ -59,15 +67,14 @@ export default class Form extends Component {
                       className={css.input}
                       type="tel"
                       name="number"
-                      value={this.state.number}
-                      onChange={this.handleChange}
+                      value={number}
+                      onChange={handleChange}
                       required
                   />
-                {/* <label className={css.label}>Message</label>
-                <textarea className={css.textarea} name="message" /> */}
+               
                 <button className={css.button} type='submit'>Add contact</button>
             </form>   
        </div>
     )
-  }
+  
 }

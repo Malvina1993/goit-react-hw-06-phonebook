@@ -1,14 +1,13 @@
-import React, { Component } from 'react'
+
 import css from './Contact.module.css'
-export default class Contact extends Component {
+export const Contact = ({name, number, onContactDelete}) => {
 
 
-  render() {
     return (
         <div className={css.contact}>
-            <li className={css.liContact}>{this.props.name}: {this.props.number}</li>
-            <button className ={css.delContact} onClick={() => this.props.onContactDelete(this.props.name)}>Delete</button>
+            <li className={css.liContact}>{name}: {number}</li>
+            <button className ={css.delContact} onClick={() => onContactDelete(name)}>Delete</button>
         </div>
     )
-  }
+  
 }

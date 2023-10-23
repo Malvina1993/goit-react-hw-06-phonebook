@@ -1,27 +1,27 @@
-import Contact from 'components/Contact/Contact';
-import React, { Component } from 'react'
-
-export default class Contacts extends Component {  
+import {Contact} from 'components/Contact/Contact';
 
 
-    onFilterChange = () => { 
+export const Contacts = ({contacts, filterName, onContactDelete}) => {  
+
+
+   const  onFilterChange = () => { 
         
-        return (this.props.contacts.filter((contact) => contact.name.toLowerCase().includes(this.props.filterName.toLowerCase())));
+        return (contacts.filter((contact) => contact.name.toLowerCase().includes(filterName.toLowerCase())));
     }
 
 
-  render() {
+  
     return (
         <div>
             
             <ul>
-                {this.onFilterChange().map((contact) => {
+                {onFilterChange().map((contact) => {
                     return (
                         <Contact
                             key={contact.id}
                             name={contact.name}
                             number={contact.number}
-                            onContactDelete={this.props.onContactDelete}
+                            onContactDelete={onContactDelete}
                         />
                     )
                  })
@@ -30,5 +30,5 @@ export default class Contacts extends Component {
             </ul>
         </div>
     )
-  }
+
 }
