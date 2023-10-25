@@ -5,8 +5,11 @@ export const Contacts = ({contacts, filterName, onContactDelete}) => {
 
 
    const  onFilterChange = () => { 
-        
-        return (contacts.filter((contact) => contact.name.toLowerCase().includes(filterName.toLowerCase())));
+       if (filterName) {
+           return (contacts.filter((contact) => contact.name.toLowerCase().includes(filterName.toLowerCase())));
+       }
+
+       return contacts;
     }
 
 

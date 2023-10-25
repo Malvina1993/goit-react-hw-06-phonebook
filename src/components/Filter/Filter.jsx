@@ -1,16 +1,13 @@
-import { useState } from 'react'
 import css from './Filter.module.css'
 
 
 export const Filter = ({filter, onChange}) => {
 
   
-  const [filterValue, setFilter] = useState(filter);
   
     const handleChange = (e) => { 
     
         
-      setFilter(e.target.value);
 
       onChange(e.target.value);
         
@@ -24,7 +21,7 @@ export const Filter = ({filter, onChange}) => {
           className={css.input}
                 type="text"
                 name="filter"
-                value={filterValue}
+                value={filter}
                 onChange={handleChange}
             />
       </div>

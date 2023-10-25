@@ -2,52 +2,44 @@
 import { Form } from "./Form/Form";
 import {Contacts} from "./Contacts/Contacts";
 
-import { useEffect, useState } from "react";
+// import { useEffect} from "react";
 import { Filter } from "./Filter/Filter";
 
+import {useSelector, useDispatch} from 'react-redux'
 
-
+import {addContact, deleteContact, setFilter} from '../redux/contactsReducer.js'
 
 
 export const App = () => {
  
+  const contacts = useSelector((state) => state.contacts.contactsData);
+  const filter = useSelector((state) => state.contacts.filterName)
 
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
+  const dispatch = useDispatch();
+   
+  console.log(contacts);
 
-  // const componentDidMount = () => {
+   
+
+  // useEffect(() => {
   //   if (localStorage.getItem('contacts')) {
-  //     this.setState({
-  //       contacts: JSON.parse(localStorage.getItem('contacts'))
-  //     })
+  //     // setContacts(JSON.parse(localStorage.getItem('contacts')))
+  //     // dispatch({type: 'contacts/setContacts', payload:[{id, ...data}, ...contacts]})
   //   }
-  // } 
+  // }, [])
 
-  useEffect(() => {
-    if (localStorage.getItem('contacts')) {
-      setContacts(JSON.parse(localStorage.getItem('contacts')))
-    }
-  }, [])
-
-  // const componentDidUpdate = () => {
-  //   if (this.state.contacts.length !== 0) {
-  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  
+  // useEffect(() => {
+  //    if (contacts.length !== 0) {
+  //     localStorage.setItem('contacts', JSON.stringify(contacts));
   //   }
-    
-    
-  // }
-  useEffect(() => {
-     if (contacts.length !== 0) {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
-    }
-  }, [contacts])
+  // }, [contacts])
 
   const formSubmitHandle = (data, id) => {
-    // this.setState({
-    //   contacts: [{ id, ...data }, ...this.state.contacts],
-    
-    // })
-    setContacts([{id, ...data}, ...contacts])
+   console.log(data)
+    // setContacts([{id, ...data}, ...contacts])
+    dispatch(addContact({ id, ...data }))
+    console.log(contacts)
 
   }
 
@@ -57,24 +49,24 @@ export const App = () => {
     // this.setState({
     //   filter: data
     // })
-    setFilter(data);
+    // setFilter(data);
+    dispatch(setFilter(data))
+    
   };
 
   const onContactDelete = (name) => {
-    // this.setState({
-    //   contacts: this.state.contacts.filter(contact => contact.name !== name)
-    // })
-
-    setContacts(contacts.filter(contact => contact.name !== name));
+   
+    dispatch(deleteContact(name))
+    
   
 
-    const newContacts = contacts.filter(contact => contact.name !== name);
-    if (newContacts.length === 0) {
-      localStorage.removeItem('contacts');
-      return;
-     }
+    // const newContacts = contacts.filter(contact => contact.name !== name);
+    // if (newContacts.length === 0) {
+    //   localStorage.removeItem('contacts');
+    //   return;
+    //  }
 
-    localStorage.setItem('contacts', JSON.stringify(newContacts));
+    // localStorage.setItem('contacts', JSON.stringify(newContacts));
   
 
   };
